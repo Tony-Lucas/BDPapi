@@ -20,4 +20,4 @@ app.use("/mercadoria",mercadoriasRoutes);
 app.use("/notas",notasRoutes)
 app.use("/vendas",routesVendas)
 
-app.listen(3333);
+app.listen(process.env.PORT || 3000);
