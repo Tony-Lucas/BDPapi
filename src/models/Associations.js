@@ -8,6 +8,7 @@ Admin.hasMany(Nota);
 Nota.belongsTo(Admin);
 Nota.hasMany(Venda);
 Venda.belongsTo(Nota);
-
+Mercadoria.hasMany(Venda);
+Venda.belongsTo(Mercadoria);
 
 sequelize.sync({force:false})

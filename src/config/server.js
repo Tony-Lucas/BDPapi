@@ -12,8 +12,12 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 const adminRoutes = require("../routes/Admin");
 const mercadoriasRoutes = require("../routes/Mercadoria");
+const notasRoutes = require("../routes/Nota");
+const vendasRoutes = require("../routes/Venda");
 
 app.use("/admin",adminRoutes);
 app.use("/mercadoria",mercadoriasRoutes);
+app.use("/notas",notasRoutes)
+app.use("/vendas",routesVendas)
 
 app.listen(3333);
