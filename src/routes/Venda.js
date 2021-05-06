@@ -6,8 +6,9 @@ const sequelize = require("../config/database");
 const Sequelize = require("sequelize");
 const Venda = require("../models/Venda");
 const Op = Sequelize.Op;
+const autenticacao = require("../config/Autenticacao");
 
-Router.get("/porid",async (req,res) => {
+Router.get("/porid",autenticacao,async (req,res) => {
     try {
         const vendas = await Venda.findAll({where:{notaId: req.query.id}})
         res.json({ success: true, vendas: vendas });
@@ -16,7 +17,7 @@ Router.get("/porid",async (req,res) => {
     }
 })
 
-Router.post("/",async (req,res) => {
+Router.post("/",autenticacao,async (req,res) => {
     try {
         const venda = await Venda.create({
             precoDia:req.body.precoDia,

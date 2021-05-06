@@ -6,13 +6,14 @@ const sequelize = require("../config/database");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 const pdf = require('html-pdf');
+const autenticacao = require("../config/Autenticacao");
 
-Router.get("/limite", async (req, res) => {
+Router.get("/limite", autenticacao, async (req, res) => {
     const notas = await sequelize.query("SELECT * FROM notas LIMIT 10 OFFSET " + req.query.pulos);
     res.json({ notas: notas })
 })
 
-Router.get("/porid", async (req, res) => {
+Router.get("/porid", autenticacao, async (req, res) => {
     const nota = await Nota.findOne({ where: { id: req.query.id } });
     if (nota) {
         res.json({ success: true, nota: nota })
@@ -21,17 +22,17 @@ Router.get("/porid", async (req, res) => {
     }
 })
 
-Router.post("/pdf",(req,res) => {
+Router.post("/pdf", autenticacao, (req, res) => {
     const documentHtml = req.body.corpo;
-    pdf.create(documentHtml,{}).toFile("./uploads/pdfnota.pdf",(err,res) => {
-        if(err){
+    pdf.create(documentHtml, {}).toFile("./uploads/pdfnota.pdf", (err, res) => {
+        if (err) {
 
         }
     })
     res.json({ success: true });
 })
 
-Router.get("/pordata", async (req, res) => {
+Router.get("/pordata", autenticacao, async (req, res) => {
     try {
         const notas = await Nota.findAll({ where: { data: { [Op.between]: [req.query.datainicial, req.query.datafinal] } }, order: [["data", "DESC"]] })
         res.json({ success: true, notas: notas })
@@ -40,7 +41,7 @@ Router.get("/pordata", async (req, res) => {
     }
 })
 
-Router.post("/", async (req, res) => {
+Router.post("/", autenticacao, async (req, res) => {
     try {
         const nota = await Nota.create({
             subtotal: req.body.subtotal,

@@ -39,7 +39,7 @@ Router.get("/limite", async (req, res) => {
     res.json({mercadorias:mercadorias})
 })
 
-Router.post("/", upload.single("img"), async (req, res) => {
+Router.post("/", autenticacao ,upload.single("img"), async (req, res) => {
     if (req.file) {
         const mercadoria = await Mercadoria.create({ nome: req.body.nome, precoCompra: req.body.precoCompra, precoVenda: req.body.precoVenda, nomeImg: req.file.filename });
         if (mercadoria) {
