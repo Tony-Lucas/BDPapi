@@ -22,22 +22,21 @@ Router.get("/", async (req, res) => {
 })
 
 Router.get("/:id/:token", async (req, res) => {
-    const mercadoria = await Mercadoria.findOne({ where: { id: req.params.id } });
-    if (mercadoria) {
-        res.json({ sucess: true, mercadoria: mercadoria })
-    } else {
-        res.json({ success: false })
+    try {
+        const mercadoria = await Mercadoria.findOne({ where: { id: req.params.id } });
+        if (mercadoria) {
+            res.json({ sucess: true, mercadoria: mercadoria })
+        } else {
+            res.json({ success: false })
+        }
+    } catch (error) {
+        res.json({ erro: error })
     }
 })
 
-Router.get("/limite/:pulos", async (req, res) => {
-    const results = await sequelize.query("SELECT * FROM mercadorias LIMIT 10 OFFSET " + req.params.pulos, { raw: true, type: QueryTypes.SELECT });
-    console.log(results)
-    if (results) {
-        res.json({ sucess: true, mercadoria: results })
-    } else {
-        res.json({ success: false })
-    }
+Router.get("/limite", async (req, res) => {
+    const mercadorias = await sequelize.query("SELECT * FROM mercadorias LIMIT 10 OFFSET " + req.query.pulos);
+    res.json({mercadorias:mercadorias})
 })
 
 Router.post("/", upload.single("img"), async (req, res) => {
